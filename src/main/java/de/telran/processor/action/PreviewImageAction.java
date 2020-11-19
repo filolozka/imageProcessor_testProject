@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 public class PreviewImageAction implements ImageAction{
     @Override
     public String getName() {
-        return null;
+        return "PREVIEW";
     }
 
     @Override

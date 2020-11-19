@@ -10,7 +10,7 @@ import java.util.Properties;
 //String getActionPackage()
 //List<String> getActionClassNames()
 
-public class ActionsConfigService {
+public class ActionsConfigService implements ActionConfigServiceInt {
     private Properties prop = new Properties();
 
     public ActionsConfigService() throws IOException {
