@@ -1,7 +1,5 @@
 package de.telran.processor.entity;
 
-import de.telran.processor.application.ImageProcessor;
-
 public class ImageDescriptor {
     private String imageURL;
     private String actionName;
