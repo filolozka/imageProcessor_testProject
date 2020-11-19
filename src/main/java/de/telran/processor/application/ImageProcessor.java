@@ -6,7 +6,6 @@ import de.telran.processor.services.DownloadService;
 import de.telran.processor.services.FileService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ImageProcessor {
     private FileService fileService;
@@ -18,7 +17,7 @@ public class ImageProcessor {
         FileService fileService = new FileService();
         DownloadService dlService = new DownloadService();
         ImageProcessor processor = new ImageProcessor(fileService, dlService);
-        processor.getDownloadedImages(csvFile);
+        processor.process(csvFile);
         //тут нужны mockito тесты
 
     }
@@ -28,10 +27,8 @@ public class ImageProcessor {
         this.downloadService = downloadService;
     }
 
-    public List<DownloadedImage> getDownloadedImages(String fileName){
+    public void process(String fileName){
         List<ImageDescriptor> imageDescriptors = fileService.readImageDescriptions(fileName);
-        List<String> urlsList = imageDescriptors.stream().map(ImageDescriptor::getImageURL).collect(Collectors.toList());
-        List<DownloadedImage> imageList = downloadService.downloadImages(urlsList);
-        return imageList;
+        List<DownloadedImage> imageList = downloadService.downloadImagesWithDescriptors(imageDescriptors);
     }
 }
