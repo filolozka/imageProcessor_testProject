@@ -15,15 +15,30 @@ import java.util.Map;
 import java.util.Properties;
 
 public class ImageActionFactory {
-    public ImageAction getAction(String actionName) {
-        switch (actionName) {
-            case "PREVIEW":
-                return new PreviewImageAction();
-            case "GRAYSCALE":
-                return new GrayscaleImageAction();
-            default:
-                return new DefaultImageAction();
+    private ActionConfigServiceInt actionsConfigService;
+    private Map<String, ImageAction> imageActionMap = new HashMap<>();
+
+    public ImageActionFactory(ActionsConfigService configService) throws Exception {
+        this.actionsConfigService = configService;
+
+        List<String> actionClassNames = actionsConfigService.getActionClassNames();
+        String actionPackage = actionsConfigService.getActionPackage();
+
+        for (String actionClassName : actionClassNames) {
+            ImageAction imageAction = (ImageAction) Class.forName(actionPackage + "."
+                    + actionClassName).getConstructor().newInstance();
+            imageActionMap.put(imageAction.getName(), imageAction);
         }
+    }
+
+    public ImageAction getAction(String actionName) {
+        return imageActionMap.get(actionName);
+    }
+
+    public static void main(String[] args) throws Exception {
+        ImageActionFactory imageActionFactory = new ImageActionFactory(new ActionsConfigService());
+        ImageAction preview = imageActionFactory.getAction("PREVIEW");
+        preview.doAction(null);
     }
 }
 
