@@ -32,7 +32,11 @@ public class ImageActionFactory {
     }
 
     public ImageAction getAction(String actionName) {
-        return imageActionMap.get(actionName);
+        ImageAction imageAction = imageActionMap.get(actionName);
+        if (imageAction == null){
+            return  new DefaultImageAction();
+        }
+      return imageAction;
     }
 
     public static void main(String[] args) throws Exception {
