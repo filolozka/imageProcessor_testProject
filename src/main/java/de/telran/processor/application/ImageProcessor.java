@@ -23,12 +23,12 @@ public class ImageProcessor {
         processor.process(csvFile);
         //тут нужны mockito тесты
 
-        try {
-            processor.process(csvFile);
-        }
-        catch (IOException ex){
-            System.out.println(ex);
-        }
+        //try {
+          //  processor.process(csvFile);
+        //}
+        //catch (IOException ex){
+          //  System.out.println(ex);
+        //}
     }
 
     public ImageProcessor(FileService fileService, DownloadService downloadService){
