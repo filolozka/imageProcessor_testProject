@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 public class DefaultImageAction implements ImageAction {
     @Override
     public String getName() {
-        return null;
+        return "DEFAULT";
     }
 
     @Override

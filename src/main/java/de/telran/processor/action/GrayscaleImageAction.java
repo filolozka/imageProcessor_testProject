@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 public class GrayscaleImageAction implements ImageAction {
     @Override
     public String getName() {
-        return null;
+        return "GRAYSCALING";
     }
 
     @Override
