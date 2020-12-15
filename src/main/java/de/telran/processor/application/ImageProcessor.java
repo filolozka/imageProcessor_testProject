@@ -3,6 +3,7 @@ package de.telran.processor.application;
 import de.telran.processor.entity.DownloadedImage;
 import de.telran.processor.entity.ImageDescriptor;
 import de.telran.processor.services.DownloadService;
+import de.telran.processor.services.FileConfigService;
 import de.telran.processor.services.FileService;
 
 import java.io.IOException;
@@ -12,11 +13,11 @@ public class ImageProcessor {
     private FileService fileService;
     private DownloadService downloadService;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         String csvFile = args[0];
 
-        FileService fileService = new FileService();
+        FileService fileService = new FileService(new FileConfigService());
 
         DownloadService dlService = new DownloadService();
         ImageProcessor processor = new ImageProcessor(fileService, dlService);
