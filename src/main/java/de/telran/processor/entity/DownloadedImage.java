@@ -21,4 +21,8 @@ public class DownloadedImage {
     public BufferedImage getImage() {
         return image;
     }
+
+    public ImageDescriptor getDescriptor(){
+        return descriptor;
+    }
 }
