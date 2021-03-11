@@ -14,7 +14,7 @@ public class ImageProcessor {
     private DownloadService downloadService;
     private ImageService imageService;
 
-    public ImageProcessor(FileService fileService, DownloadService downloadService, ImageService imageService){
+    public ImageProcessor(FileService fileService, DownloadService downloadService, ImageService imageService) {
         this.fileService = fileService;
         this.downloadService = downloadService;
         this.imageService = imageService;
@@ -31,13 +31,14 @@ public class ImageProcessor {
         processor.process(csvFile);
     }
 
-    public void process(String fileName){
+    public void process(String fileName) {
         //main logic is here
 
         // reading CSV file to get image data like URLS and actions
         List<ImageDescriptor> imageDescriptors = fileService.readImageDescriptors(fileName);
         // download images
         List<DownloadedImage> imageList = downloadService.downloadImages(imageDescriptors);
+
         //filter successfully downloaded images
         List<DownloadedImage> successfulDownloadedImages = imageList
                 .stream()

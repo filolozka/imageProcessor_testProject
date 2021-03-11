@@ -7,11 +7,6 @@ public class DownloadedImage {
     private boolean isSuccessful;
     private ImageDescriptor descriptor;
 
-    public DownloadedImage(BufferedImage image, boolean isSuccessful){
-        this.image = image;
-        this.isSuccessful = isSuccessful;
-    }
-
     public DownloadedImage(BufferedImage image, boolean isSuccessful, ImageDescriptor descriptor){
         this.image = image;
         this.isSuccessful = isSuccessful;

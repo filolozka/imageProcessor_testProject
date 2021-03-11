@@ -4,6 +4,7 @@ import de.telran.processor.entity.DownloadedImage;
 import de.telran.processor.entity.ImageDescriptor;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
@@ -36,10 +37,10 @@ public class FileService {
 
     public void saveImageAsFile(DownloadedImage imageToSave) {
         try {
+            File fileToSave = new File(fileConfigService.getPathToSavedImages(),
+                    nameGeneratorService.generateImageName(imageToSave.getDescriptor()));
             ImageIO.write(imageToSave.getImage(),
-                    "jpg",
-                    new File(fileConfigService.getPathToSavedImages(),
-                            nameGeneratorService.generateImageName(imageToSave.getDescriptor())));
+                    "jpg", fileToSave);
         } catch (Exception ex) {
             ex.printStackTrace();
             //logger

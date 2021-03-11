@@ -11,6 +11,6 @@ public class PreviewImageAction implements ImageAction{
     @Override
     public BufferedImage doAction(BufferedImage image) throws Exception {
         System.out.println("Generating an image");
-        return null;
+        return image;
     }
 }
