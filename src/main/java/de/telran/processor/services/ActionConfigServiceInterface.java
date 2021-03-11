@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-public interface ActionConfigServiceInt {
+public interface ActionConfigServiceInterface {
     String getActionPackage();
     List<String> getActionClassNames();
 }

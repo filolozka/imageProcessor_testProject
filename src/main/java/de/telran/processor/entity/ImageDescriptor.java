@@ -5,8 +5,8 @@ public class ImageDescriptor {
     private String actionName;
 
     public ImageDescriptor(String imageURL, String actionName){
-        this.actionName = actionName;
         this.imageURL = imageURL;
+        this.actionName = actionName;
     }
 
     public String getImageURL() {

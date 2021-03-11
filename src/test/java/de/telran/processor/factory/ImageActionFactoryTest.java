@@ -1,6 +1,5 @@
 package de.telran.processor.factory;
 
-import de.telran.processor.action.DefaultImageAction;
 import de.telran.processor.action.ImageAction;
 import de.telran.processor.services.ActionsConfigService;
 import org.junit.Test;
@@ -12,21 +11,24 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ImageActionFactoryTest {
-    ActionsConfigService testConfigS = mock(ActionsConfigService.class);
-
+    ActionsConfigService configService = mock(ActionsConfigService.class);
 
     @Test
     public void getAction() throws Exception {
-       // List<String> listOfNames = Arrays.asList("GrayscaleImageAction", "DefaultImageAction", "PreviewImageAction");
-        when(testConfigS.getActionPackage()).thenReturn("de.telran.processor.action");
-        when(testConfigS.getActionClassNames()).thenReturn(getClassNames());
+        //configure mocks
+        when(configService.getActionPackage()).thenReturn("de.telran.processor.action");
+        when(configService.getActionClassNames()).thenReturn(getClassNames());
 
-        ImageActionFactory testFactory = new ImageActionFactory(testConfigS);
-        ImageAction imageActionTest = testFactory.getAction("DEFAULT");
-        assertEquals("DEFAULT", imageActionTest.getName());
+        //execute testing method
+        ImageActionFactory testFactory = new ImageActionFactory(configService);
+        ImageAction imageActionTest = testFactory.getAction("PREVIEW");
 
-        verify(testConfigS, times(1)).getActionPackage();
-        verify(testConfigS, times(1)).getActionClassNames();
+        //assert result
+        assertNotNull(imageActionTest);
+        assertEquals("PREVIEW", imageActionTest.getName());
+
+        verify(configService, times(1)).getActionPackage();
+        verify(configService, times(1)).getActionClassNames();
     }
 
     private static List<String> getClassNames(){

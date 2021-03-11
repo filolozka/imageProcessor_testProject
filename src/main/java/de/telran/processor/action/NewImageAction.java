@@ -2,15 +2,15 @@ package de.telran.processor.action;
 
 import java.awt.image.BufferedImage;
 
-public class GrayscaleImageAction implements ImageAction {
+public class NewImageAction implements ImageAction {
     @Override
     public String getName() {
-        return "GRAYSCALE";
+        return "NEW ACTION";
     }
 
     @Override
     public BufferedImage doAction(BufferedImage image) throws Exception {
-        System.out.println("Grayscaling an image");
+        System.out.println("executing new action");
         return image;
     }
 }

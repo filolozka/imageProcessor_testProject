@@ -11,13 +11,22 @@ public class FileConfigService {
         loadProperties();
     }
 
-    public String getPathToSavedImages(String pathForSaveImages) {
+    public String getPathToSavedImages() {
         return property.getProperty("pathForSaveImages");
     }
 
     private void loadProperties() throws IOException {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        InputStream stream = loader.getResourceAsStream("application.properties");
-        property.load(stream);
+        try {
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            InputStream stream = loader.getResourceAsStream("application.properties");
+            if (stream == null){
+                System.out.println("Sorry, the file application.properties not found");
+                return;
+            }
+            property.load(stream);
+        }
+        catch (IOException exception){
+            exception.printStackTrace();
+        }
     }
 }

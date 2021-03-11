@@ -2,64 +2,53 @@ package de.telran.processor.services;
 
 import de.telran.processor.entity.DownloadedImage;
 import de.telran.processor.entity.ImageDescriptor;
-import org.testng.annotations.Test;
 
 import javax.imageio.ImageIO;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.net.URL;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class FileService {
+    private static  String CSV_SEPARATOR=";";
     private FileConfigService fileConfigService;
+    private NameGeneratorService nameGeneratorService;
 
-    public FileService(FileConfigService fileConfigService) {
+    public FileService(FileConfigService fileConfigService, NameGeneratorService nameGeneratorService) {
         this.fileConfigService = fileConfigService;
+        this.nameGeneratorService = nameGeneratorService;
     }
 
-    public List<ImageDescriptor> readImageDescriptions(String fileName) {
-        List<String> listOfImageDescriptions = readFileToStringList(fileName);
-        return listOfImageDescriptions.stream().map(this::convertStringToObject).collect(Collectors.toList());
-    }
-    private ImageDescriptor convertStringToObject(String line){
-        return new ImageDescriptor(line.split("::")[0], line.split("::")[1]);
-    }
-
-    private List<String> readFileToStringList(String fileName) {
-        List<String> stringList = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
-            stringList = bufferedReader.lines().collect(Collectors.toList());
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-        }
-        System.out.println(stringList);
-        return stringList;
-    }
-
-    public void saveImageAsFile (DownloadedImage image){
+    public List<ImageDescriptor> readImageDescriptors(String fileName) {
         try {
-            ImageIO.write(image.getImage(),
+            return Files
+                    .lines(Paths.get(fileName))
+                    .map(FileService::stringToImageDescriptor)
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            return Collections.EMPTY_LIST;
+        }
+    }
+
+    public void saveImageAsFile(DownloadedImage imageToSave) {
+        try {
+            ImageIO.write(imageToSave.getImage(),
                     "jpg",
-                    new File(fileConfigService.getPathToSavedImages("pathForSaveImages"), generateImageName(image.getDescriptor())));
+                    new File(fileConfigService.getPathToSavedImages(),
+                            nameGeneratorService.generateImageName(imageToSave.getDescriptor())));
         } catch (Exception ex) {
             ex.printStackTrace();
+            //logger
         }
     }
 
-    public String generateImageName(ImageDescriptor imageDescriptor) throws Exception {
-        String path = new URL(imageDescriptor.getImageURL()).getPath();
-        File file = new File(path);
-        String imageName = imageDescriptor.getActionName();
 
-        String imageNameFin = file.getAbsolutePath().replaceAll("/", "_").replaceAll("C:\\\\", "").replace(".jpg", "_") + imageName + ".jpg";
-        return imageNameFin;
+    private static ImageDescriptor stringToImageDescriptor(String string) {
+        String[] split = string.split(CSV_SEPARATOR);
+        return new ImageDescriptor(split[0], split[1]);
     }
-
-    public FileConfigService getFileConfigService() {
-        return fileConfigService;
-    }
-    
 }

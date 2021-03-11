@@ -1,16 +1,14 @@
 package de.telran.processor.services;
 
+import de.telran.processor.factory.ImageActionFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-//Create ActionsConfigService, which encapsulates a java property file "actions.properties" and has 2 public methods:
-//String getActionPackage()
-//List<String> getActionClassNames()
-
-public class ActionsConfigService implements ActionConfigServiceInt {
+public class ActionsConfigService implements ActionConfigServiceInterface {
     private Properties prop = new Properties();
 
     public ActionsConfigService() throws IOException {
@@ -18,9 +16,21 @@ public class ActionsConfigService implements ActionConfigServiceInt {
     }
 
     private void loadProperties() throws IOException {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        InputStream stream = loader.getResourceAsStream("action.properties");
-        prop.load(stream);
+        try (
+                InputStream input = ImageActionFactory.class
+                        .getClassLoader()
+                        .getResourceAsStream("action.properties")) {
+            if (input == null) {
+                System.out.println("Sorry, unable to find action.properties");
+                return;
+            }
+            //load a properties file from class path, inside static method
+            prop.load(input);
+
+        } catch (
+                IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public String getActionPackage() {

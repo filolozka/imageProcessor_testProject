@@ -22,6 +22,10 @@ public class DownloadedImage {
         return image;
     }
 
+    public boolean isSucсessful() {
+        return isSuccessful;
+    }
+
     public ImageDescriptor getDescriptor(){
         return descriptor;
     }

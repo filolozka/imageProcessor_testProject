@@ -14,11 +14,13 @@ public class FileServiceTest {
 
     @Test
     public void generateImageName() throws Exception {
-        FileService fileService = new FileService(new FileConfigService());
-        ImageDescriptor descriptor = mock(ImageDescriptor.class);
-        when(descriptor.getActionName()).thenReturn("GRAYSCALING");
-        when(descriptor.getImageURL()).thenReturn("https://images.app.goo.gl/pUw6ojBfrWBvsFh28.jpg");
+        NameGeneratorService nameGeneratorService = new NameGeneratorService();
+        FileService fileService = new FileService(new FileConfigService(), nameGeneratorService);
+        ImageDescriptor descriptor = new ImageDescriptor("https://images.app.goo.gl/7Qiqcx17wSjKZ8Fr9", "GRAYSCALE");
 
-        assertEquals("pUw6ojBfrWBvsFh28_GRAYSCALING.jpg", fileService.generateImageName(descriptor));
+        String expected = "7Qiqcx17wSjKZ8Fr9GRAYSCALE.jpg";
+        String actual = nameGeneratorService.generateImageName(descriptor);
+
+        assertEquals(expected, actual);
     }
 }
